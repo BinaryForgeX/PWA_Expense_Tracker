@@ -1,6 +1,6 @@
-import { useThemeContext } from "@/hooks/useThemeContext"
+import { useThemeContext } from "@/context"
 
-const ThemeToggle = () => {
+export const ThemeToggle = () => {
     const { theme, setTheme } = useThemeContext()
 
     const handleToggle = () => {
@@ -31,5 +31,3 @@ const ThemeToggle = () => {
         </button>
     )
 }
-
-export default ThemeToggle

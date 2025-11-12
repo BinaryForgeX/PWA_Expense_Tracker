@@ -8,11 +8,15 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
-      "components/*": ["components/*"],
-      "context/*": ["context/*"],
-      "hooks/*": ["hooks/*"],
-      "types/*": ["types/*"],
-      "utils/*": ["utils/*"]
+      "@base/*": ["base/*"],
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@hooks/*": ["hooks/*"],
+      "@layout/*": ["layout/*"],
+      "@pages/*": ["pages/*"],
+      "@props/*": ["props/*"],
+      "@providers/*": ["providers/*"],
+      "@types/*": ["types/*"]
     }
   }
 }

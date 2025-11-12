@@ -1,5 +1,5 @@
+import { BeforeInstallPromptEvent } from "@/types"
 import { useEffect, useState } from "react"
-import type { BeforeInstallPromptEvent } from "@/types/BeforeInstallPromptEvent"
 
 export const useInstallPrompt = () => {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
@@ -11,11 +11,9 @@ export const useInstallPrompt = () => {
             e.preventDefault()
             setDeferredPrompt(e)
             setInstallAvailable(true)
-            console.log("🟢 beforeinstallprompt captured")
         }
 
         const handleAppInstalled = () => {
-            console.log("✅ PWA installed successfully!")
             setInstalled(true)
             setInstallAvailable(false)
             setDeferredPrompt(null)
@@ -38,10 +36,8 @@ export const useInstallPrompt = () => {
 
         await deferredPrompt.prompt()
         const { outcome } = await deferredPrompt.userChoice
-        console.log("User choice:", outcome)
 
         if (outcome === "accepted") {
-            console.log("✅ User accepted install")
             setInstalled(true)
         }
 

@@ -1,8 +1,8 @@
 import { BrowserRouter } from "react-router-dom"
-import { ThemeProvider, ExpenseProvider } from "@/providers"
+import { ThemeProvider, ExpenseProvider, LocationProvider } from "@/providers"
 import App from "@/App"
-import Popup from "@/components/Popup"
-import { useServiceWorker } from "@/hooks/useServiceWorker"
+import { useServiceWorker } from "./hooks"
+import { Popup } from "./base"
 
 const RootApp = () => {
     const { updateAvailable, reloadApp } = useServiceWorker()
@@ -12,7 +12,9 @@ const RootApp = () => {
             <BrowserRouter>
                 <ThemeProvider>
                     <ExpenseProvider>
+                        <LocationProvider>
                             <App />
+                        </LocationProvider>
                     </ExpenseProvider>
                 </ThemeProvider>
             </BrowserRouter>

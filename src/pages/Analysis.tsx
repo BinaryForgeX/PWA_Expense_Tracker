@@ -1,4 +1,4 @@
-const Analysis = () => (
+export const Analysis = () => (
     <div>
         <h2 className="text-2xl font-bold mb-4">Spending Analysis</h2>
         <p className="text-gray-500 dark:text-gray-400">
@@ -6,4 +6,3 @@ const Analysis = () => (
         </p>
     </div>
 )
-export default Analysis

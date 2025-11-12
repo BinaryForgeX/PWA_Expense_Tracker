@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import { Menu, X } from "lucide-react"
-import { useDashboardLayout } from "@/hooks/useDashboardLayout"
-import { LayoutProps } from "@/types"
+import { useDashboardLayout } from "@/hooks"
+import { LayoutProps } from "@/props"
 
 const DashboardLayout = ({ children }: LayoutProps) => {
     const {

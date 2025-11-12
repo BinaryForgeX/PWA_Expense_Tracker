@@ -1,7 +1,11 @@
+export { }
+
 declare global {
     interface Navigator {
-        standalone?: boolean; // iOS Safari PWA detection
+        standalone?: boolean
+    }
+
+    interface WindowEventMap {
+        beforeinstallprompt: BeforeInstallPromptEvent
     }
 }
-
-export { }

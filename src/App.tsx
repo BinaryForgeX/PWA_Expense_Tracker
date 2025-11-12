@@ -1,11 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import DashboardLayout from "@/layout/DashboardLayout"
-import Home from "@/pages/Home"
-import Daily from "@/pages/Daily"
-import Monthly from "@/pages/Monthly"
-import Analysis from "@/pages/Analysis"
-import Settings from "@/pages/Settings"
-import AddExpensePage from "@/pages/AddExpensePage"
+import { AddExpensePage, Analysis, Daily, Home, Monthly, Settings } from "@/pages"
 
 const App = () => (
   <DashboardLayout>

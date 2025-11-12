@@ -1,10 +1,14 @@
-import ThemeToggle from "@/components/ThemeToggle"
-import { useInstallPrompt } from "@/hooks/useInstallPrompt"
 import { useState, useEffect } from "react"
+import { useLocationContext } from "@/context"
+import { useInstallPrompt } from "@/hooks"
+import { ThemeToggle } from "@/components"
+import { Modal } from "@/base"
 
-const Settings = () => {
+export const Settings = () => {
     const { installAvailable, promptInstall } = useInstallPrompt()
+    const { permissionGranted, grantPermission, revokePermission, location, fetching } = useLocationContext()
     const [isInstalled, setIsInstalled] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         // Check if PWA is installed (standalone mode)
@@ -49,6 +53,69 @@ const Settings = () => {
                         <div className="flex justify-center">
                             <ThemeToggle />
                         </div>
+                    </div>
+
+                    {/* 📍 Location Permission */}
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-2xl p-3 sm:p-4 transition-colors">
+                        <div className="flex items-center mb-2 sm:mb-3">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+                                <span className="text-white text-sm sm:text-lg">📍</span>
+                            </div>
+                            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                                Location Access
+                            </h3>
+                        </div>
+                        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">
+                            Manage app access to your current location.
+                        </p>
+
+                        <div className="flex justify-center">
+                            {permissionGranted ? (
+                                <button
+                                    onClick={revokePermission}
+                                    className="w-full sm:w-64 bg-red-500 hover:bg-red-600 text-white py-2 sm:py-2.5 rounded-xl font-semibold shadow-md hover:scale-105 transition-all"
+                                >
+                                    🔒 Revoke Access
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => setShowModal(true)}
+                                    disabled={fetching}
+                                    className={`w-full sm:w-64 py-2 sm:py-2.5 rounded-xl font-semibold text-white shadow-md transition-all ${fetching
+                                            ? "bg-gray-400 cursor-wait"
+                                            : "bg-blue-500 hover:bg-blue-600 hover:scale-105 active:scale-95"
+                                        }`}
+                                >
+                                    {fetching ? "Requesting..." : "📍 Grant Access"}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Current Location Display */}
+                        {permissionGranted && location && (
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                                Current:{" "}
+                                {location.address ||
+                                    `${location.latitude.toFixed(2)}, ${location.longitude.toFixed(2)}`}
+                            </p>
+                        )}
+
+                        {/* Permission Confirmation Modal */}
+                        {showModal && (
+                            <Modal
+                                show={showModal}
+                                type="info"
+                                title="Allow Location Access"
+                                message="This app will use your current location to tag your expenses. You can revoke this permission anytime from Settings."
+                                confirmText="Allow"
+                                cancelText="Cancel"
+                                onConfirm={() => {
+                                    grantPermission()
+                                    setShowModal(false)
+                                }}
+                                onCancel={() => setShowModal(false)}
+                            />
+                        )}
                     </div>
 
                     {/* 📱 App Installation */}
@@ -122,4 +189,3 @@ const Settings = () => {
     )
 }
 
-export default Settings

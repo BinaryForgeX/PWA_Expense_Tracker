@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-const Footer = () => {
+export const Footer = () => {
     const year = new Date().getFullYear()
     return (
         <motion.footer
@@ -16,5 +16,3 @@ const Footer = () => {
         </motion.footer>
     )
 }
-
-export default Footer

@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
-import { PopupProps } from "@/types"
+import { PopupProps } from "@/props"
 
-const Popup = ({ message, type = "info", show, onClose }: PopupProps) => {
+export const Popup = ({ message, type = "info", show, onClose }: PopupProps) => {
     useEffect(() => {
         if (show) {
             const timer = setTimeout(onClose, 3000)
@@ -41,5 +41,3 @@ const Popup = ({ message, type = "info", show, onClose }: PopupProps) => {
 
     return createPortal(popup, document.body)
 }
-
-export default Popup

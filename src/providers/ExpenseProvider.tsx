@@ -1,6 +1,5 @@
+import { Expense, ExpenseContext } from '@/types'
 import { useState, useEffect } from 'react'
-import { ExpenseContext } from '../context/expenseContext'
-import type { Expense } from '@/types/Expense'
 
 export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [expenses, setExpenses] = useState<Expense[]>(() => {

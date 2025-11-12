@@ -1,7 +1,7 @@
+import { useInstallPrompt } from "@/hooks"
 import { motion } from "framer-motion"
-import { useInstallPrompt } from "@/hooks/useInstallPrompt"
 
-const InstallButton = () => {
+export const InstallButton = () => {
     const { installAvailable, promptInstall, installed } = useInstallPrompt()
 
     if (installed) return null
@@ -29,5 +29,3 @@ const InstallButton = () => {
         </motion.button>
     )
 }
-
-export default InstallButton

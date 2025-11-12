@@ -1,6 +1,6 @@
 import { useExpenseContext } from "@/context/expenseContext"
 
-const ExpenseList = () => {
+export const ExpenseList = () => {
     const { expenses, deleteExpense, clearAll, total } = useExpenseContext()
 
     if (expenses.length === 0)
@@ -75,5 +75,3 @@ const ExpenseList = () => {
         </div>
     )
 }
-
-export default ExpenseList

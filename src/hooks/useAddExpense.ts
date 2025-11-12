@@ -1,10 +1,9 @@
 import { useState } from "react"
-import { useExpenseContext } from "@/context/expenseContext"
-import { useGeoLocation } from "@/hooks/useGeoLocation"
+import { useExpenseContext, useLocationContext } from "@/context"
 
 export const useAddExpense = () => {
     const { addExpense } = useExpenseContext()
-    const { location, locationEnabled, fetchLocation, fetchingLocation } = useGeoLocation()
+    const { permissionGranted, location } = useLocationContext()
 
     const [title, setTitle] = useState("")
     const [amount, setAmount] = useState("")
@@ -42,14 +41,13 @@ export const useAddExpense = () => {
             date,
             time,
             description: description.trim() || undefined,
-            location: locationEnabled ? location || undefined : undefined,
+            location: permissionGranted ? location || undefined : undefined,
         })
 
         setTitle("")
         setAmount("")
         setDescription("")
         setError("")
-
         setPopupType("success")
         setPopupMessage("✅ Expense Added Successfully!")
         setShowPopup(true)
@@ -70,9 +68,5 @@ export const useAddExpense = () => {
         setPopupMessage,
         setPopupType,
         handleSubmit,
-        location,
-        locationEnabled,
-        fetchingLocation,
-        fetchLocation,
     }
 }

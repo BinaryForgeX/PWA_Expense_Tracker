@@ -1,4 +1,4 @@
-import { useExpenseContext } from "@/context/expenseContext"
+import { useExpenseContext } from "@/context"
 import { Expense } from "@/types"
 
 export const useDailyExpenses = () => {

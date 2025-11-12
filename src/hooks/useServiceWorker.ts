@@ -1,4 +1,4 @@
-import { ServiceWorkerStatusProps } from "@/types"
+import { ServiceWorkerStatusProps } from "@/props"
 import { useEffect, useState } from "react"
 
 export const useServiceWorker = (): ServiceWorkerStatusProps => {
@@ -17,7 +17,6 @@ export const useServiceWorker = (): ServiceWorkerStatusProps => {
         const registerServiceWorker = async () => {
             try {
                 const reg = await navigator.serviceWorker.register("/sw.js")
-                console.log("✅ Service Worker registered:", reg.scope)
                 setRegistration(reg)
                 setIsRegistered(true)
 
@@ -27,7 +26,6 @@ export const useServiceWorker = (): ServiceWorkerStatusProps => {
 
                     newWorker.addEventListener("statechange", () => {
                         if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                            console.log("🆕 New version detected — waiting for user action.")
                             setUpdateAvailable(true)
                         }
                     })
@@ -42,7 +40,6 @@ export const useServiceWorker = (): ServiceWorkerStatusProps => {
         const handleControllerChange = () => {
             if (refreshing) return
             refreshing = true
-            console.log("♻️ Controller changed — new version activated.")
             window.location.reload()
         }
 
@@ -55,7 +52,6 @@ export const useServiceWorker = (): ServiceWorkerStatusProps => {
     }, [])
 
     const reloadApp = () => {
-        console.log("🔄 Reloading app to activate new version...")
         window.location.reload()
     }
 

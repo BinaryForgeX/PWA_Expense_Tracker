@@ -1,4 +1,4 @@
-import { useExpenseContext } from "@/context/expenseContext"
+import { useExpenseContext } from "@/context"
 
 export const useDashboardMetrics = () => {
     const { expenses, total } = useExpenseContext()

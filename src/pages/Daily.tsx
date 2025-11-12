@@ -1,8 +1,8 @@
 import { CalendarDays, IndianRupee, Clock } from "lucide-react"
 import { format, parse } from "date-fns"
-import { useDailyExpenses } from "@/hooks/useDailyExpenses"
+import { useDailyExpenses } from "@/hooks"
 
-const Daily = () => {
+export const Daily = () => {
     const { groupedExpenses, sortedDates, dailyTotals, hasExpenses } = useDailyExpenses()
 
     return (
@@ -60,5 +60,3 @@ const Daily = () => {
         </div>
     )
 }
-
-export default Daily
