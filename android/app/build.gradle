@@ -22,10 +22,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-
     // 🔥 FIX: Force Gradle toolchain to Java 17
     java {
         toolchain {
