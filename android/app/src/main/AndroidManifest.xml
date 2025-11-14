@@ -42,13 +42,6 @@
             </intent-filter>
         </activity>
 
-        <!-- SMS Receiver -->
-        <receiver android:name="com.bottomsnode.sms.SmsReceiver" android:exported="true">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-            </intent-filter>
-        </receiver>
-
         <!-- File provider -->
         <provider
             android:name="androidx.core.content.FileProvider"

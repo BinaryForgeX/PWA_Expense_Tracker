@@ -13,10 +13,7 @@ import com.getcapacitor.JSObject;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.PluginMethod;
 
-@CapacitorPlugin(name = "Sms", permissions = {
-        Manifest.permission.RECEIVE_SMS,
-        Manifest.permission.READ_SMS
-})
+@CapacitorPlugin(name = "Sms")
 public class SmsPlugin extends Plugin {
 
     private static final int SMS_PERMISSION_REQ = 10101;
@@ -24,7 +21,6 @@ public class SmsPlugin extends Plugin {
 
     @Override
     public void load() {
-        // Attach bridge to Receiver
         SmsReceiver.setBridge(getBridge());
     }
 
@@ -47,10 +43,9 @@ public class SmsPlugin extends Plugin {
             return;
         }
 
-        // Request missing permissions
         ActivityCompat.requestPermissions(
             getActivity(),
-            new String[]{Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS},
+            new String[]{ Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS },
             SMS_PERMISSION_REQ
         );
     }
@@ -64,8 +59,9 @@ public class SmsPlugin extends Plugin {
         if (savedCall == null) return;
 
         if (requestCode == SMS_PERMISSION_REQ) {
-            boolean granted = grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            boolean granted = grantResults.length > 1 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
             JSObject ret = new JSObject();
             ret.put("granted", granted);
