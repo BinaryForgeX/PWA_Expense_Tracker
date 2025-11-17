@@ -89,7 +89,7 @@ jobs:
           echo -e "\033[32m[INFO] Building Web...\033[0m"
           bun run build
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: web-build
           path: dist/
@@ -148,13 +148,13 @@ jobs:
             --no-daemon --stacktrace --console=rich 2>&1 | tee gradle-build.log
 
       # Upload logs always
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: gradle-logs-${{ github.sha }}
           path: android/gradle-build.log
           retention-days: 14
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: android-builds-${{ github.sha }}
           path: |
