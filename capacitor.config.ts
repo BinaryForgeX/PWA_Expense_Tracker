@@ -18,9 +18,9 @@ const config: CapacitorConfig = {
   loggingBehavior: "production",
 
   plugins: {
-    "capacitor-sms": {
+    "capacitor-notification-listener": {
       android: {
-        path: "./plugins/capacitor-sms/android",
+        path: "./plugins/capacitor-notification-listener/android",
       },
     },
   },
