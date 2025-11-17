@@ -23,17 +23,17 @@ A modern **Progressive Web App (PWA)** built with **React, TypeScript, and Vite*
 
 ## 🧠 Tech Stack
 
-| Layer | Tools |
-|-------|--------|
-| Framework | React (TypeScript + Vite) |
-| Styling | TailwindCSS, Shadcn UI |
-| Icons | Lucide Icons |
-| State | React Context + Custom Hooks |
-| Native Bridge | Capacitor |
-| Charts | Recharts |
-| Hosting | Vercel |
-| Code Quality | ESLint + Prettier |
-| Build Tool | Vite + TypeScript Compiler |
+| Layer         | Tools                        |
+| ------------- | ---------------------------- |
+| Framework     | React (TypeScript + Vite)    |
+| Styling       | TailwindCSS, Shadcn UI       |
+| Icons         | Lucide Icons                 |
+| State         | React Context + Custom Hooks |
+| Native Bridge | Capacitor                    |
+| Charts        | Recharts                     |
+| Hosting       | Vercel                       |
+| Code Quality  | ESLint + Prettier            |
+| Build Tool    | Vite + TypeScript Compiler   |
 
 ---
 
@@ -141,27 +141,32 @@ src/
 ## 🧩 Command Cheat Sheet
 
 ### 🔹 Development
+
 ```bash
 yarn dev
 # or npm run dev
 ```
 
 ### 🔹 Build for Production
+
 ```bash
 yarn build
 ```
 
 ### 🔹 Preview Build
+
 ```bash
 yarn preview
 ```
 
 ### 🔹 Lint Code
+
 ```bash
 yarn lint
 ```
 
 ### 🔹 Build Android App (Capacitor)
+
 ```bash
 yarn cap:build
 # or step-by-step:
@@ -169,6 +174,7 @@ yarn cap:build
 ```
 
 ### 🔹 Open Android Studio
+
 ```bash
 yarn cap:open
 ```

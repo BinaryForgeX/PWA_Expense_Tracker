@@ -2,8 +2,11 @@ name: Daily Security Check
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # 9 AM daily
+    - cron: "0 9 * * *" # daily at 9 AM
   workflow_dispatch:
+
+env:
+  FORCE_COLOR: "1" # enable colored output
 
 jobs:
   audit:
@@ -12,98 +15,87 @@ jobs:
     permissions:
       issues: write
       contents: read
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'yarn'
-      
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      
-      - name: Run security audit
+      - uses: actions/checkout@v4
+
+      - name: 🟦 Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 📋 Run Bun security audit
         id: audit
         continue-on-error: true
         run: |
-          echo "Running yarn audit..."
-          
-          # Run audit and capture exit code
-          if yarn audit --level moderate --json > audit-results.json; then
-            echo "vulnerabilities_found=false" >> $GITHUB_OUTPUT
-            echo "No vulnerabilities found!"
-          else
-            # Audit failed, meaning vulnerabilities were found
+          echo -e "\033[36m[INFO] Starting security audit at $(date -u)...\033[0m"
+
+          echo "::group::Running bun audit"
+          bun audit --json > audit-results.json || true
+          echo "::endgroup::"
+
+          # Detect vulnerabilities
+          if grep -q '"vulnerabilities"' audit-results.json; then
             echo "vulnerabilities_found=true" >> $GITHUB_OUTPUT
-            
-            # Generate human-readable summary
-            echo "## Security Audit Results" > audit-summary.md
-            echo "" >> audit-summary.md
-            echo "**Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> audit-summary.md
-            echo "" >> audit-summary.md
-            yarn audit --level moderate >> audit-summary.md 2>&1 || true
-            
-            # Also extract summary from JSON
-            echo "" >> audit-summary.md
-            echo "### Summary" >> audit-summary.md
-            cat audit-results.json | grep -o '"vulnerabilities":{[^}]*}' >> audit-summary.md || true
+            echo -e "\033[31m[WARNING] Vulnerabilities detected!\033[0m"
+          else
+            echo "vulnerabilities_found=false" >> $GITHUB_OUTPUT
+            echo -e "\033[32m[OK] No vulnerabilities found.\033[0m"
           fi
-      
-      - name: Upload audit results
+
+          echo "## Security Audit Summary ($(date -u))" > audit-summary.md
+          echo "" >> audit-summary.md
+
+          echo "::group::Readable Report"
+          bun audit >> audit-summary.md 2>&1 || true
+          echo "::endgroup::"
+
+      - name: 📦 Upload audit logs
         if: steps.audit.outputs.vulnerabilities_found == 'true'
         uses: actions/upload-artifact@v5
         with:
-          name: security-audit-results
+          name: security-audit-${{ github.run_id }}
           path: |
             audit-results.json
             audit-summary.md
           retention-days: 30
-      
-      - name: Create issue if vulnerabilities found
+
+      - name: 🛑 Create or update security issue
         if: steps.audit.outputs.vulnerabilities_found == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const summary = fs.readFileSync('audit-summary.md', 'utf8');
-            
-            // Check if issue already exists
+            const body = fs.readFileSync('audit-summary.md', 'utf8');
+
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'open',
-              labels: 'security,dependencies',
-              per_page: 100
+              labels: "security,dependencies",
+              state: "open"
             });
-            
-            const existingIssue = issues.data.find(issue => 
-              issue.title.includes('Security vulnerabilities detected')
+
+            const existing = issues.data.find(i => 
+              i.title.includes("Security vulnerabilities detected")
             );
-            
-            if (existingIssue) {
-              // Update existing issue
+
+            if (existing) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: existingIssue.number,
-                body: `## New vulnerabilities detected on ${new Date().toISOString().split('T')[0]}\n\n${summary}\n\n---\n[View workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId})`
+                issue_number: existing.number,
+                body: `### New Audit (${new Date().toISOString()})\n\n${body}`
               });
             } else {
-              // Create new issue
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: '🚨 Security vulnerabilities detected',
-                body: `${summary}\n\n---\n**Action Required:** Run \`yarn audit fix\` to resolve vulnerabilities.\n\n[View workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId})`,
-                labels: ['security', 'dependencies', 'urgent']
+                title: "🚨 Security vulnerabilities detected",
+                body,
+                labels: ["security", "dependencies", "urgent"]
               });
             }
-      
-      - name: Fail workflow if critical vulnerabilities found
+
+      - name: ❌ Fail workflow if vulnerabilities exist
         if: steps.audit.outputs.vulnerabilities_found == 'true'
         run: |
-          echo "::error::Security vulnerabilities detected! Check the created issue for details."
+          echo -e "\033[31m[ERROR] Security issues found. Failing workflow.\033[0m"
           exit 1

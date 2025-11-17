@@ -1,17 +1,18 @@
 {
-  "name": "Expense_Tracker_PWA",
+  "name": "expense-tracker-pwa",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint . --cache --cache-location .eslintcache",
-    "preview": "vite preview",
-    "cap:copy": "npx cap copy",
-    "cap:sync": "npx cap sync",
-    "cap:open": "npx cap open android",
-    "cap:build": "yarn build && yarn cap:copy && yarn cap:sync"
+    "dev": "bun --bun vite",
+    "build": "bun --bun tsc -b && bun --bun vite build",
+    "format": "bun --bun prettier . --write",
+    "lint:format": "bun --bun eslint . --fix --cache --cache-location .eslintcache && bun --bun prettier . --write",
+    "preview": "bun --bun vite preview",
+    "cap:copy": "bun x cap copy",
+    "cap:sync": "bun x cap sync",
+    "cap:open": "bun x cap open android",
+    "cap:build": "bun run build && bun run cap:copy && bun run cap:sync"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",

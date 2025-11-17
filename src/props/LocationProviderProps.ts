@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 export type LocationProviderProps = {
-    children: ReactNode
-}
+  children: ReactNode;
+};

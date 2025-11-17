@@ -1,6 +1,13 @@
-import { Routes, Route } from "react-router-dom"
-import { AddExpensePage, Analysis, Daily, Home, Monthly, Settings } from "@/pages"
-import { DashboardLayout } from "@/layout"
+import { Routes, Route } from "react-router-dom";
+import {
+  AddExpensePage,
+  Analysis,
+  Daily,
+  Home,
+  Monthly,
+  Settings,
+} from "@/pages";
+import { DashboardLayout } from "@/layout";
 
 const App = () => (
   <DashboardLayout>
@@ -13,6 +20,6 @@ const App = () => (
       <Route path="/settings" element={<Settings />} />
     </Routes>
   </DashboardLayout>
-)
+);
 
-export default App
+export default App;

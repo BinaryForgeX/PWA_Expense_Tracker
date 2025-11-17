@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export const useDashboardLayout = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768)
-        window.addEventListener("resize", handleResize)
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    const toggleSidebar = () => setSidebarOpen((prev) => !prev)
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
-    const closeSidebarOnMobile = () => {
-        if (isMobile) setSidebarOpen(false)
-    }
+  const closeSidebarOnMobile = () => {
+    if (isMobile) setSidebarOpen(false);
+  };
 
-    const navItems = [
-        { label: "Overview", to: "/" },
-        { label: "Add Expense", to: "/add-expense" },
-        { label: "Daily Expense", to: "/daily" },
-        { label: "Monthly Expense", to: "/monthly" },
-        { label: "Analysis", to: "/analysis" },
-        { label: "Settings", to: "/settings" },
-    ]
+  const navItems = [
+    { label: "Overview", to: "/" },
+    { label: "Add Expense", to: "/add-expense" },
+    { label: "Daily Expense", to: "/daily" },
+    { label: "Monthly Expense", to: "/monthly" },
+    { label: "Analysis", to: "/analysis" },
+    { label: "Settings", to: "/settings" },
+  ];
 
-    return {
-        sidebarOpen,
-        isMobile,
-        toggleSidebar,
-        closeSidebarOnMobile,
-        navItems,
-        setSidebarOpen,
-    }
-}
+  return {
+    sidebarOpen,
+    isMobile,
+    toggleSidebar,
+    closeSidebarOnMobile,
+    navItems,
+    setSidebarOpen,
+  };
+};
