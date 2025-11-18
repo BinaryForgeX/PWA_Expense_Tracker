@@ -112,7 +112,7 @@ jobs:
           mkdir -p android/app
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
 
-      - name: Export signing environment
+      - name: Export signing secrets
         run: |
           echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> $GITHUB_ENV
@@ -125,13 +125,13 @@ jobs:
 
       - name: Capacitor Sync
         run: |
-          bunx cap copy
-          bunx cap sync android
+          npx cap copy
+          npx cap sync android
 
       - name: Build Signed Release APK
         run: |
           cd android
-          ./gradlew assembleRelease --no-daemon --stacktrace --console=rich \
+          ./gradlew assembleRelease --no-daemon --stacktrace \
             2>&1 | tee gradle-build.log
 
       - uses: actions/upload-artifact@v4
@@ -182,5 +182,5 @@ jobs:
     if: always()
     steps:
       - run: |
-          echo -e "\033[36mWEB BUILD: \033[0m${{ needs.build-web.result }}"
-          echo -e "\033[36mANDROID BUILD: \033[0m${{ needs.build-android.result }}"
+          echo "WEB BUILD: ${{ needs.build-web.result }}"
+          echo "ANDROID BUILD: ${{ needs.build-android.result }}"
