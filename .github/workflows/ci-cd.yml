@@ -50,6 +50,8 @@ jobs:
 
       # Setup Bun for fast installs + scripts
       - uses: oven-sh/setup-bun@v1
+        with:
+            bun-version: "1.3.2"
 
       # Install JS deps using bun
       - run: bun install --frozen-lockfile
