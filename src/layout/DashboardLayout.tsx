@@ -10,7 +10,6 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
     toggleSidebar,
     closeSidebarOnMobile,
     navItems,
-    setSidebarOpen,
   } = useDashboardLayout();
 
   return (
@@ -19,7 +18,7 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
       {(sidebarOpen || !isMobile) && (
         <aside
           className="fixed md:relative top-0 left-0 h-full md:h-auto w-64 md:w-1/4 
-                        bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl 
+                        bg-white/90 dark:bg-gray-900 backdrop-blur-xl 
                         shadow-2xl md:shadow-none z-50 flex flex-col justify-between 
                         transition-all duration-300 ease-in-out border-r border-gray-200 dark:border-gray-700"
         >
@@ -59,8 +58,8 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
 
           <div
             className="p-4 text-xs text-gray-500 dark:text-gray-400 text-center
-             border-t border-gray-200 dark:border-gray-700
-             bg-gray-50 dark:bg-gray-700/50 flex flex-col items-center justify-center"
+              border-t border-gray-200 dark:border-gray-700
+              bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center"
           >
             <div className="inline-flex items-center gap-1.5">
               <span>© {new Date().getFullYear()}</span>
@@ -83,27 +82,21 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
         </aside>
       )}
 
-      {/* Mobile overlay */}
-      {sidebarOpen && isMobile && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* Mobile overlay - Removed entirely */}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col md:w-3/4">
         {/* Header */}
         <header
           className="flex justify-between items-center px-4 sm:px-6 py-4 
-                        bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl 
+                        bg-white/80 dark:bg-gray-900 backdrop-blur-xl 
                         shadow-lg sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700"
         >
           <button
             className="md:hidden text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
             onClick={toggleSidebar}
           >
-            {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            {sidebarOpen ? <X size={25} /> : <Menu size={24} />}
           </button>
           <h1 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Dashboard
@@ -112,7 +105,7 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full bg-white/50 dark:bg-gray-800/50 rounded-t-3xl md:rounded-t-none shadow-inner">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 max-w-7xl mx-auto w-full bg-white/50 dark:bg-gray-800/50 rounded-t-3xl md:rounded-t-none shadow-inner">
           {children}
         </main>
       </div>
