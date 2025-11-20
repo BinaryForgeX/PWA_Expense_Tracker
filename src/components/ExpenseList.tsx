@@ -21,7 +21,7 @@ const getTimestamp = (date: string, time?: string) =>
   new Date(`${date} ${time ?? "00:00"}`).getTime();
 
 export const ExpenseList = () => {
-  const { expenses, deleteExpense, total } = useExpenseContext();
+  const { expenses, deleteExpense } = useExpenseContext();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
@@ -221,7 +221,6 @@ export const ExpenseList = () => {
           </div>
         </div>
       )}
-
 
       {/* Modal */}
       {modalVisible && (

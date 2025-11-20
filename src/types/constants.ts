@@ -184,5 +184,7 @@ export const UPI_OFFICIAL_HANDLES = new Set([
   "fino",
 ]);
 export const DAY_IN_MS = 24 * 60 * 60 * 1000;
-export const getTimestamp = (date: string, time?: string) => new Date(`${date} ${time ?? "00:00"}`).getTime();
-export const sectionCardBase = "rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg p-4 mb-2";
+export const getTimestamp = (date: string, time?: string) =>
+  new Date(`${date} ${time ?? "00:00"}`).getTime();
+export const sectionCardBase =
+  "rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg p-4 mb-2";
