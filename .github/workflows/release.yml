@@ -58,6 +58,8 @@ jobs:
         with:
           name: android-apk
           path: artifacts/
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Ensure APK present
         run: |
