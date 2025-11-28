@@ -149,19 +149,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: ci
     if: ${{ needs.ci.result == 'success' }}
+
     steps:
       - name: "⤴ Checkout"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: "⚙️ Setup Node (for Capacitor) & Bun"
+      - name: "⚙️ Setup Node (Capacitor runtime)"
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: "✨ Setup Bun"
-        uses: oven-sh/setup-bun@v2
 
       - name: "☕ Setup Java"
         uses: actions/setup-java@v5
@@ -189,10 +187,6 @@ jobs:
         run: |
           echo "::group::🔐 Keystore"
           mkdir -p android/app
-          if [ -z "${{ secrets.ANDROID_KEYSTORE_BASE64 || '' }}" ]; then
-            echo -e "${{ env.CYBER_FAIL }}ERROR: ANDROID_KEYSTORE_BASE64 not set${{ env.CYBER_RST }}" >&2
-            exit 1
-          fi
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
           echo "::endgroup::"
 
@@ -201,6 +195,12 @@ jobs:
           echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "ANDROID_KEY_ALIAS_PASSWORD=${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: "⬇️ Install JS deps (npm, required for Capacitor)"
+        run: |
+          echo "::group::📦 Installing JS deps (npm)"
+          npm ci
+          echo "::endgroup::"
 
       - name: "📥 Download web-build artifact"
         uses: actions/download-artifact@v4
@@ -211,23 +211,14 @@ jobs:
       - name: "📂 Unpack web build"
         run: |
           echo "::group::📂 Unpack web-build"
-          ls -la dist.zip || true
-          unzip -q dist.zip -d dist || true
+          unzip -q dist.zip -d dist
           echo "::endgroup::"
 
       - name: "🔁 Capacitor: copy & sync (android)"
         run: |
           echo "::group::🔁 Capacitor sync"
-          if [ -x "./node_modules/.bin/cap" ]; then
-            ./node_modules/.bin/cap copy
-            ./node_modules/.bin/cap sync android
-          elif command -v npx >/dev/null 2>&1; then
-            npx cap copy
-            npx cap sync android
-          else
-            echo -e "${{ env.CYBER_FAIL }}ERROR: Capacitor CLI not found${{ env.CYBER_RST }}" >&2
-            exit 1
-          fi
+          npx cap copy
+          npx cap sync android
           echo "::endgroup::"
 
       - name: "🧰 Build Signed Release APK"
@@ -235,7 +226,6 @@ jobs:
           echo "::group::🧰 Gradle build"
           cd android
           chmod +x gradlew
-          # enable daemon + configure build cache usage if available
           ./gradlew assembleRelease --no-daemon --stacktrace
           echo "::endgroup::"
 
@@ -245,29 +235,20 @@ jobs:
           echo "::group::🔎 Verify APK"
           APK="android/app/build/outputs/apk/release/app-release.apk"
           if [ ! -f "$APK" ]; then
-            echo -e "${{ env.CYBER_FAIL }}✗ APK missing at $APK${{ env.CYBER_RST }}" >&2
-            ls -la android/app/build/outputs || true
+            echo -e "${{ env.CYBER_FAIL }}✗ APK missing${{ env.CYBER_RST }}"
             exit 1
           fi
-
-          # portable size check
-          if stat --version >/dev/null 2>&1; then
-            SIZE=$(stat -c%s "$APK")
-          else
-            SIZE=$(stat -f%z "$APK")
-          fi
-
+          SIZE=$(stat -c%s "$APK")
           if [ "$SIZE" -lt ${{ env.APK_MIN_SIZE_BYTES }} ]; then
-            echo -e "${{ env.CYBER_FAIL }}✗ APK too small ($SIZE bytes). Threshold: ${{ env.APK_MIN_SIZE_BYTES }}${{ env.CYBER_RST }}" >&2
+            echo -e "${{ env.CYBER_FAIL }}✗ APK too small ($SIZE bytes)${{ env.CYBER_RST }}"
             exit 1
           fi
-
           OUT="expense-tracker-${GITHUB_SHA:0:7}.apk"
           mkdir -p artifacts
           cp "$APK" "artifacts/$OUT"
           echo "apk_path=artifacts/$OUT" >> $GITHUB_OUTPUT
           echo "::endgroup::"
-          echo -e "${{ env.CYBER_OK }}✓ APK verified and copied → artifacts/$OUT${{ env.CYBER_RST }}"
+          echo -e "${{ env.CYBER_OK }}✓ APK ready → artifacts/$OUT${{ env.CYBER_RST }}"
 
       - name: "🗄️ Upload android-apk artifact"
         uses: actions/upload-artifact@v4
@@ -275,13 +256,6 @@ jobs:
           name: android-apk
           path: ${{ steps.rename.outputs.apk_path }}
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
-
-      - name: "📜 Android step summary"
-        run: |
-          echo "## Android Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- APK artifact: android-apk" >> $GITHUB_STEP_SUMMARY
-          echo "- SHA: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
-          echo "- APK size threshold: ${{ env.APK_MIN_SIZE_BYTES }} bytes" >> $GITHUB_STEP_SUMMARY
 
 ########################
 # RELEASE: create GitHub Release only on semver tags (v*)
