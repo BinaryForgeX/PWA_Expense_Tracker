@@ -24,8 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 
-.vscode
-
 android/app/*.keystore
+.vscode
+/coverage
 *.jks
 /.github/old-workflows
