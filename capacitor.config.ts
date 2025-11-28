@@ -1,21 +1,33 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'com.bottomsnode.expensetracker',
-  appName: 'expense-tracker',
-  webDir: 'dist',
+  appId: "com.bottomsnode.expensetracker",
+  appName: "expense-tracker",
+  webDir: "dist",
 
   server: {
-    androidScheme: 'https',
-    cleartext: true   // allow http if needed (local API, debug)
+    androidScheme: "https",
+    cleartext: true,
   },
 
   android: {
-    allowMixedContent: true, // avoids images/api blocking inside WebView
-    captureInput: true       // improves keyboard handling
+    allowMixedContent: true,
+    captureInput: true,
   },
 
-  loggingBehavior: 'production'
+  loggingBehavior: "production",
+
+  plugins: {
+    Geolocation: {
+      androidBackgroundLocation: true,
+    },
+
+    "capacitor-notification-listener": {
+      android: {
+        path: "./plugins/capacitor-notification-listener/android",
+      },
+    },
+  },
 };
 
 export default config;

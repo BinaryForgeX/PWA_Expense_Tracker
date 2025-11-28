@@ -175,3 +175,5 @@ See `.github/docs/`:
 
 **Bottoms'Node**  
 Live URL: https://pwa-expense-tracker.vercel.app
+
+**Made with ❤️ by Bottoms'Node — Powered by React, TypeScript & Capacitor**

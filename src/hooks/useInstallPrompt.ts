@@ -1,49 +1,75 @@
-import { BeforeInstallPromptEvent } from "@/types"
-import { useEffect, useState } from "react"
+import { BeforeInstallPromptEvent } from "@/types";
+import { useEffect, useState } from "react";
+import { getPlatform } from "@/utils";
 
 export const useInstallPrompt = () => {
-    const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-    const [installAvailable, setInstallAvailable] = useState(false)
-    const [installed, setInstalled] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
 
-    useEffect(() => {
-        const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-            e.preventDefault()
-            setDeferredPrompt(e)
-            setInstallAvailable(true)
-        }
+  const [installAvailable, setInstallAvailable] = useState(false);
+  const [installed, setInstalled] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
+  const [blocked, setBlocked] = useState(false);
 
-        const handleAppInstalled = () => {
-            setInstalled(true)
-            setInstallAvailable(false)
-            setDeferredPrompt(null)
-        }
+  const platform = getPlatform();
 
-        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-        window.addEventListener("appinstalled", handleAppInstalled)
+  useEffect(() => {
+    let gotEvent = false;
 
-        return () => {
-            window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-            window.removeEventListener("appinstalled", handleAppInstalled)
-        }
-    }, [])
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+      e.preventDefault();
+      gotEvent = true;
+      setDeferredPrompt(e);
+      setInstallAvailable(true);
+    };
 
-    const promptInstall = async () => {
-        if (!deferredPrompt) {
-            console.warn("⚠️ No install prompt available yet")
-            return
-        }
+    const handleAppInstalled = () => {
+      setInstalled(true);
+      setInstallAvailable(false);
+      setDeferredPrompt(null);
+      setShowInstallModal(false);
+    };
 
-        await deferredPrompt.prompt()
-        const { outcome } = await deferredPrompt.userChoice
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
-        if (outcome === "accepted") {
-            setInstalled(true)
-        }
+    // If Chrome DIDN’T fire beforeinstallprompt → its blocked or unsupported
+    const timeout = setTimeout(() => {
+      if (!gotEvent) setBlocked(true);
+    }, 3000);
 
-        setDeferredPrompt(null)
-        setInstallAvailable(false)
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
+      window.removeEventListener("appinstalled", handleAppInstalled);
+    };
+  }, []);
+
+  const triggerInstall = async () => {
+    if (!deferredPrompt) return;
+
+    await deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setInstalled(true);
     }
 
-    return { installAvailable, installed, promptInstall }
-}
+    setDeferredPrompt(null);
+    setInstallAvailable(false);
+    setShowInstallModal(false);
+  };
+
+  return {
+    installAvailable,
+    installed,
+    showInstallModal,
+    setShowInstallModal,
+    triggerInstall,
+    blocked,
+    platform,
+  };
+};

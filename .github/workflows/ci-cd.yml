@@ -1,12 +1,14 @@
 name: CI Pipeline
 
 on:
+  # Trigger CI on pushes to main/dev and on version tags like v1.2.3
   push:
     branches: [main, dev]
   pull_request:
     branches: [main, dev]
   workflow_dispatch:
 
+# Prevent multiple concurrent runs for same branch/tag
 concurrency:
   group: ci-pipeline-${{ github.ref }}
   cancel-in-progress: true

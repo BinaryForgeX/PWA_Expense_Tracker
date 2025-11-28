@@ -22,10 +22,6 @@ allprojects {
         google()
         mavenCentral()
     }
-    tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
 }
 
 task clean(type: Delete) {

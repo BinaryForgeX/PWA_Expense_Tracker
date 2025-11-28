@@ -1,14 +1,15 @@
-import { defineConfig } from "vite"
-import react from "@vitejs/plugin-react"
-import tailwindcss from "@tailwindcss/vite"
-import path from "path"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
+import pkg from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
+  plugins: [react(), tailwindcss()],
 
   base: "./",
 
@@ -24,6 +25,7 @@ export default defineConfig({
       "@props": path.resolve(__dirname, "./src/props"),
       "@providers": path.resolve(__dirname, "./src/providers"),
       "@types": path.resolve(__dirname, "./src/types"),
+      "@plugins": path.resolve(__dirname, "plugins"),
     },
   },
 
@@ -35,8 +37,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'],
-          ui: ['lucide-react'],
+          react: ["react", "react-dom"],
+          ui: ["lucide-react"],
         },
       },
     },
@@ -46,4 +48,4 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
-})
+});

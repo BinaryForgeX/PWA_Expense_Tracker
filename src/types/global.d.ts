@@ -1,11 +1,13 @@
-export { }
+export {};
 
 declare global {
-    interface Navigator {
-        standalone?: boolean
-    }
+  interface Navigator {
+    standalone?: boolean;
+  }
 
-    interface WindowEventMap {
-        beforeinstallprompt: BeforeInstallPromptEvent
-    }
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+
+  declare const __APP_VERSION__: string;
 }

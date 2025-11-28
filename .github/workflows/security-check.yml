@@ -22,6 +22,9 @@ env:
   FORCE_COLOR: "1"
   DEFAULT_SEVERITY: "moderate"
 
+env:
+  FORCE_COLOR: "1" # enable colored output
+
 jobs:
   audit:
     name: Security Audit
