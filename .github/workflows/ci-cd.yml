@@ -3,7 +3,9 @@ name: CI/CD Pipeline
 on:
   # Trigger CI on pushes to main/dev and on version tags like v1.2.3
   push:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
     tags:
       - "v*.*.*"
 
@@ -232,7 +234,7 @@ jobs:
         run: |
           echo "::group::Installing SDK"
           yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
           echo "::endgroup::"
 
       - name: "🔑 Restore signing keystore"
