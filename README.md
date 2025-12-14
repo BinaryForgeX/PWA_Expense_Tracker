@@ -173,7 +173,7 @@ See `.github/docs/`:
 
 ## 👤 Author
 
-**BinaryStudio8**  
+**BinaryForgeX**  
 Live URL: https://pwa-expense-tracker.vercel.app
 
-**Made with ❤️ by BinaryStudio8 — Powered by React, TypeScript & Capacitor**
+**Made with ❤️ by BinaryForgeX — Powered by React, TypeScript & Capacitor**

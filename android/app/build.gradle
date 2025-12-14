@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.BinaryStudio8.expensetracker"
+    namespace "com.BinaryForgeX.expensetracker"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.BinaryStudio8.expensetracker"
+        applicationId "com.BinaryForgeX.expensetracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

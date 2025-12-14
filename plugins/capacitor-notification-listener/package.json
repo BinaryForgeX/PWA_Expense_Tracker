@@ -24,7 +24,7 @@
     "bank",
     "auto-expense"
   ],
-  "author": "BinaryStudio8",
+  "author": "BinaryForgeX",
   "license": "MIT",
   "peerDependencies": {
     "@capacitor/core": "^7.0.0"
