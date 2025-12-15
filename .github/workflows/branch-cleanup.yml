@@ -238,7 +238,7 @@ jobs:
           echo "deleted_stale_count=$(wc -l < deleted-stale.txt || echo 0)" >> $GITHUB_OUTPUT
 
       - name: Upload cleanup logs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: branch-cleanup-${{ github.run_id }}
           path: |
