@@ -13,8 +13,8 @@ updates:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 5
-    assignees: ["BinaryForgeX"]
-    reviewers: ["BinaryForgeX"]
+    assignees: ["nishit-shivdasani"]
+    reviewers: ["nishit-shivdasani"]
     labels: ["dependencies"]
     commit-message:
       prefix: "chore"

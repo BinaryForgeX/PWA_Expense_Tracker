@@ -1,4 +1,4 @@
-package com.BinaryForgeX.notifications;
+package com.nishit-shivdasani.notifications;
 
 import android.content.Context;
 import android.content.Intent;

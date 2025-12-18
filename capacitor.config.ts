@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.BinaryForgeX.expensetracker",
+  appId: "com.nishit-shivdasani.expensetracker",
   appName: "expense-tracker",
   webDir: "dist",
 

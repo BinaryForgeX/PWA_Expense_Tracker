@@ -24,7 +24,7 @@
     "bank",
     "auto-expense"
   ],
-  "author": "BinaryForgeX",
+  "author": "nishit-shivdasani",
   "license": "MIT",
   "peerDependencies": {
     "@capacitor/core": "^7.0.0"

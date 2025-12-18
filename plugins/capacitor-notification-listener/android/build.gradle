@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    namespace "com.BinaryForgeX.notifications"
+    namespace "com.nishit-shivdasani.notifications"
     compileSdk = 36
 
     defaultConfig {

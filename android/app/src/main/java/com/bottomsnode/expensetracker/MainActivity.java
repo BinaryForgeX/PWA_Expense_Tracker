@@ -1,4 +1,4 @@
-package com.BinaryForgeX.expensetracker;
+package com.nishit-shivdasani.expensetracker;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,4 +1,4 @@
-package com.BinaryForgeX.notifications;
+package com.nishit-shivdasani.notifications;
 
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;

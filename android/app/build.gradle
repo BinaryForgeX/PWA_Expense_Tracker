@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.BinaryForgeX.expensetracker"
+    namespace "com.nishit-shivdasani.expensetracker"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.BinaryForgeX.expensetracker"
+        applicationId "com.nishit-shivdasani.expensetracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

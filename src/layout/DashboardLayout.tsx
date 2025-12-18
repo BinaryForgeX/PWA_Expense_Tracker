@@ -64,7 +64,7 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
             <div className="inline-flex items-center gap-1.5">
               <span>© {new Date().getFullYear()}</span>
               <a
-                href="https://github.com/BinaryForgeX"
+                href="https://github.com/nishit-shivdasani"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 font-medium 
@@ -74,7 +74,7 @@ export const DashboardLayout = ({ children }: LayoutProps) => {
               >
                 <Github className="w-3.5 h-3.5 -mt-px" />{" "}
                 {/* tiny upward nudge for optical centering */}
-                <span>BinaryForgeX</span>
+                <span>nishit-shivdasani</span>
               </a>
               <span>. All Rights Reserved.</span>
             </div>
